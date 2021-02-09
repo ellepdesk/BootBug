@@ -6,6 +6,8 @@ const int pin_enable_read = 11;
 const int pin_led = 13;
 static uint8_t led_state = 0;
 
+const int key_delay = 500;
+
 bool enabled()
 {
     return digitalRead(pin_enable_read);
@@ -41,7 +43,7 @@ for (int i=0; i<reps; i++)
             BootKeyboard.write(k);
         }
         blink();
-        delay(200);
+        delay(key_delay);
     }
 }
 
@@ -53,10 +55,18 @@ void setup() {
     pinMode(pin_enable_read, INPUT_PULLUP);
 
     BootKeyboard.begin();
+
     hit_del_to_enter_setup();
-    press_key(KEY_RIGHT_ARROW, 5);
-    press_key(KEY_DOWN_ARROW, 11);
+    press_key(KEY_RIGHT_ARROW, 2);
+    press_key(KEY_DOWN_ARROW);
     press_key(KEY_RETURN);
+    press_key(KEY_UP_ARROW);
+    press_key(KEY_RETURN);
+    press_key(KEY_DOWN_ARROW);
+    press_key(KEY_RETURN);
+    press_key(KEY_F10);
+    press_key(KEY_RETURN);
+
     BootKeyboard.end();
 }
 
