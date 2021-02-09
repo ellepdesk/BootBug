@@ -3,50 +3,66 @@
 
 const int pin_enable_drive = 10;
 const int pin_enable_read = 11;
+const int pin_led = 13;
+static uint8_t led_state = 0;
 
 bool enabled()
 {
     return digitalRead(pin_enable_read);
 }
 
-void setup() {
-    pinMode(pin_enable_drive, OUTPUT);
-    digitalWrite(pin_enable_drive, 0);
-    pinMode(pin_enable_read, INPUT_PULLUP);
+void blink()
+{
+    led_state = !led_state;
+    digitalWrite(pin_led, led_state);
+}
 
-    BootKeyboard.begin();
-
-    for (int i=0; i<8; i++)
+void hit_del_to_enter_setup()
+{
+ for (int i=0; i<12; i++)
     {
         if (enabled())
         {
             BootKeyboard.write(KEY_DELETE);
         }
-        delay(1000);
+        blink();
+        delay(500);
+        blink();
+        delay(500);
     }
-    for (int i=0; i<5; i++)
+}
+
+void press_key(KeyboardKeycode k, int reps=1)
+{
+for (int i=0; i<reps; i++)
     {
         if (enabled())
         {
-            BootKeyboard.write(KEY_RIGHT_ARROW);
+            BootKeyboard.write(k);
         }
-        delay(100);
+        blink();
+        delay(200);
     }
-    for (int i=0; i<11; i++)
-    {
-        if (enabled())
-        {
-            BootKeyboard.write(KEY_DOWN_ARROW);
-        }
-        delay(100);
-    }
-    if (enabled())
-    {
-        BootKeyboard.write(KEY_RETURN);
-    }
+}
+
+
+void setup() {
+    pinMode(pin_led, OUTPUT);
+    pinMode(pin_enable_drive, OUTPUT);
+    digitalWrite(pin_enable_drive, 0);
+    pinMode(pin_enable_read, INPUT_PULLUP);
+
+    BootKeyboard.begin();
+    hit_del_to_enter_setup();
+    press_key(KEY_RIGHT_ARROW, 5);
+    press_key(KEY_DOWN_ARROW, 11);
+    press_key(KEY_RETURN);
     BootKeyboard.end();
 }
 
 void loop() {
-    delay(1000);
+    blink();
+    delay(1500);
+    blink();
+    delay(500);
 }
