@@ -62,6 +62,7 @@ void setup() {
     press_key(KEY_RETURN);
     press_key(KEY_UP_ARROW);
     press_key(KEY_RETURN);
+    press_key(KEY_PAGE_UP);
     press_key(KEY_DOWN_ARROW);
     press_key(KEY_RETURN);
     press_key(KEY_F10);
